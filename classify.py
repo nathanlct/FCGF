@@ -36,6 +36,7 @@ def load_cloud(path):
     print('Loading point cloud at ' + path)
     pcd = np.array(o3d.io.read_point_cloud(path).points)
     print('\tshape: ', pcd.shape)
+    return pcd
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     points = load_cloud(f'dataset/training/{name}.ply')
