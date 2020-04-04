@@ -40,7 +40,7 @@ def load_cloud(path):
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     pts = load_cloud(f'dataset/training/{name}.ply')
-    k = 300000  # batch size 
+    k = 150000  # batch size 
     
 
     for i in range(len(pts)//k+1):
