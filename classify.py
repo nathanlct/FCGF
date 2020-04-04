@@ -47,7 +47,7 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     feats = np.hstack(feats)
 
     # Voxelize points and feats
-    coords = np.floor(points / voxel_size)
+    coords = np.floor(points / VOXEL_SIZE)
     inds = ME.utils.sparse_quantize(coords, return_index=True)
     coords = coords[inds]
     # Convert to batched coords compatible with ME
