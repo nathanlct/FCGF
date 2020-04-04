@@ -40,9 +40,11 @@ def load_cloud(path):
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     pts = load_cloud(f'dataset/training/{name}.ply')
-    k = len(pts)//2
+    k = 300000  # batch size 
+    
 
-    for points in [pts[:k], pts[k:]]:
+    for i in range(len(pts)//k+1):
+        points = pts[i*k:min((i+1)*k,len(pts))]
     
         feats = []
         feats.append(np.ones((len(points), 1)))
