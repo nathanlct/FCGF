@@ -8,6 +8,7 @@ from util.misc import extract_features
 import torch
 import MinkowskiEngine as ME
 from model.resunet import ResUNetBN2C
+from ply import read_ply
 
 # params
 VOXEL_SIZE = 0.05  # in meters (?)
@@ -34,9 +35,12 @@ print('Loaded model ' + model_path)
 # load point clouds
 def load_cloud(path):
     print('Loading point cloud at ' + path)
-    pcd = np.array(o3d.io.read_point_cloud(path).points)
-    print('\tshape: ', pcd.shape)
-    return pcd
+    data = read_ply(path)
+    values = data['values']
+    points = np.vstack((data['x'], data['y'], data['z'])).T
+    # pcd = np.array(o3d.io.read_point_cloud(path).points)
+    print('\tshape: ', points.shape)
+    return points
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     pts = load_cloud(f'dataset/training/{name}.ply')
