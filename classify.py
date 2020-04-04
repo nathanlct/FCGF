@@ -13,7 +13,7 @@ from model.resunet import ResUNetBN2C
 VOXEL_SIZE = 0.05  # in meters (?)
 
 # use GPU if available
-device_str = 'cpu'  #'cuda' if torch.cuda.is_available() else 'cpu'
+device_str = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using ' + device_str)
 device = torch.device(device_str)
 
