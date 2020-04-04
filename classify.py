@@ -10,7 +10,7 @@ import MinkowskiEngine as ME
 from model.resunet import ResUNetBN2C
 
 # params
-VOXEL_SIZE = 0.025  # in meters (?)
+VOXEL_SIZE = 0.1  # in meters (?)
 
 # use GPU if available
 device_str = 'cuda' if torch.cuda.is_available() else 'cpu'
