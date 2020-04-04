@@ -19,6 +19,11 @@ device = torch.device(device_str)
 
 # load model
 model_path = 'ResUNetBN2C-16feat-3conv.pth'
+if not os.path.isfile(model_path):
+  print('Downloading weights...')
+  urlretrieve(
+      "https://node1.chrischoy.org/data/publications/fcgf/2019-09-18_14-15-59.pth",
+      'ResUNetBN2C-16feat-3conv.pth')
 checkpoint = torch.load(model_path)
 model = ResUNetBN2C(1, 16, normalize_feature=True, conv1_kernel_size=3, D=3)
 model.load_state_dict(checkpoint['state_dict'])
