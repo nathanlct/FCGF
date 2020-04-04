@@ -36,7 +36,7 @@ print('Loaded model ' + model_path)
 def load_cloud(path):
     print('Loading point cloud at ' + path)
     data = read_ply(path)
-    print(list(data.keys()))
+    print(data)
     # values = data['label']
     points = np.vstack((data['x'], data['y'], data['z'])).T
     # pcd = np.array(o3d.io.read_point_cloud(path).points)
