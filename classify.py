@@ -10,7 +10,7 @@ import MinkowskiEngine as ME
 from model.resunet import ResUNetBN2C
 
 # params
-VOXEL_SIZE = 0.1  # in meters (?)
+VOXEL_SIZE = 0.05  # in meters (?)
 
 # use GPU if available
 device_str = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -39,27 +39,30 @@ def load_cloud(path):
     return pcd
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
-    points = load_cloud(f'dataset/training/{name}.ply')
+    pts = load_cloud(f'dataset/training/{name}.ply')
+    k = len(pts)//2
+
+    for points in [pts[:k], pts[k:]]:
     
-    feats = []
-    feats.append(np.ones((len(points), 1)))
+        feats = []
+        feats.append(np.ones((len(points), 1)))
 
-    feats = np.hstack(feats)
+        feats = np.hstack(feats)
 
-    # Voxelize points and feats
-    coords = np.floor(points / VOXEL_SIZE)
-    inds = ME.utils.sparse_quantize(coords, return_index=True)
-    coords = coords[inds]
-    # Convert to batched coords compatible with ME
-    coords = ME.utils.batched_coordinates([coords])
-    return_coords = points[inds]
+        # Voxelize points and feats
+        coords = np.floor(points / VOXEL_SIZE)
+        inds = ME.utils.sparse_quantize(coords, return_index=True)
+        coords = coords[inds]
+        # Convert to batched coords compatible with ME
+        coords = ME.utils.batched_coordinates([coords])
+        return_coords = points[inds]
 
-    feats = feats[inds]
+        feats = feats[inds]
 
-    feats = torch.tensor(feats, dtype=torch.float32)
-    coords = torch.tensor(coords, dtype=torch.int32)
+        feats = torch.tensor(feats, dtype=torch.float32)
+        coords = torch.tensor(coords, dtype=torch.int32)
 
-    stensor = ME.SparseTensor(feats, coords=coords).to(device)
+        stensor = ME.SparseTensor(feats, coords=coords).to(device)
 
-    xyz_down, feature = return_coords, model(stensor).F
-    print('\tfeatures: ', feature.shape)
+        xyz_down, feature = return_coords, model(stensor).F
+        print('\tfeatures: ', feature.shape)
