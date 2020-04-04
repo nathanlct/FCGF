@@ -37,6 +37,28 @@ def load_cloud(path):
     pcd = np.array(o3d.io.read_point_cloud(path).points)
     print('\tshape: ', pcd.shape)
 
-pts1 = load_cloud('dataset/training/MiniLille1.ply')
-pts2 = load_cloud('dataset/training/MiniLille2.ply')
-pts3 = load_cloud('dataset/training/MiniParis1.ply')
+for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
+    points = load_cloud(f'dataset/training/{name}.ply')
+    
+    feats = []
+    feats.append(np.ones((len(points), 1)))
+
+    feats = np.hstack(feats)
+
+    # Voxelize points and feats
+    coords = np.floor(points / voxel_size)
+    inds = ME.utils.sparse_quantize(coords, return_index=True)
+    coords = coords[inds]
+    # Convert to batched coords compatible with ME
+    coords = ME.utils.batched_coordinates([coords])
+    return_coords = points[inds]
+
+    feats = feats[inds]
+
+    feats = torch.tensor(feats, dtype=torch.float32)
+    coords = torch.tensor(coords, dtype=torch.int32)
+
+    stensor = ME.SparseTensor(feats, coords=coords).to(device)
+
+    xyz_down, feature = return_coords, model(stensor).F
+    print('\tfeatures: ', feature.shape)
