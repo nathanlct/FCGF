@@ -72,3 +72,4 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         xyz_down, feature = return_coords, model(stensor).F
         print('\tfeatures: ', feature.shape)
+        print(xyz_down)
