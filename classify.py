@@ -83,7 +83,7 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         stensor = ME.SparseTensor(feats, coords=coords).to(device)
 
         xyz_down, features = return_coords, model(stensor).F
-        print('\tfeatures: ', feature.shape)
+        print('\tfeatures: ', features.shape)
 
         labels = labels[inds]
 
