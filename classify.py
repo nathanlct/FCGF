@@ -96,3 +96,8 @@ all_labels = np.vstack(tuple(all_labels))
 
 print('All features: ', all_features.shape)
 print('All labels: ', all_labels.shape)
+
+print('Saving...')
+
+np.save('train_features', all_features)
+np.save('train_labels', all_labels)
