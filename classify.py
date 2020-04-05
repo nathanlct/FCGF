@@ -12,6 +12,7 @@ from ply import read_ply
 
 # params
 VOXEL_SIZE = 0.05  # in meters (?)
+N_FEATURES = 16  # if this is changed, then will need to change model weights file
 
 # use GPU if available
 device_str = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -26,7 +27,7 @@ if not os.path.isfile(model_path):
       "https://node1.chrischoy.org/data/publications/fcgf/2019-09-18_14-15-59.pth",
       'ResUNetBN2C-16feat-3conv.pth')
 checkpoint = torch.load(model_path)
-model = ResUNetBN2C(1, 16, normalize_feature=True, conv1_kernel_size=3, D=3)
+model = ResUNetBN2C(1, N_FEATURES, normalize_feature=True, conv1_kernel_size=3, D=3)
 model.load_state_dict(checkpoint['state_dict'])
 model.eval()
 model = model.to(device)
@@ -41,6 +42,9 @@ def load_cloud(path):
     # pcd = np.array(o3d.io.read_point_cloud(path).points)
     print('\tshape: ', points.shape)
     return points, classes
+
+all_features = []
+all_labels = []
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     pts, lbs = load_cloud(f'dataset/training/{name}.ply')
@@ -78,8 +82,10 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         stensor = ME.SparseTensor(feats, coords=coords).to(device)
 
-        xyz_down, feature = return_coords, model(stensor).F
-        n_features = feature.shape[1]
+        xyz_down, features = return_coords, model(stensor).F
         print('\tfeatures: ', feature.shape)
 
         labels = labels[inds]
+
+        all_features.append(features)
+        all_labels.append(labels)
