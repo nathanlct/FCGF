@@ -87,13 +87,12 @@ for name in ['MiniLille1']:#, 'MiniLille2', 'MiniParis1']:
         print('\tfeatures: ', features.shape)
 
         labels = labels[inds]
-        print(np.array(labels).shape)
 
         all_features.append(features.cpu().detach().numpy())
-        all_labels.append(np.array(labels))
+        all_labels.append(np.array(labels).reshape(-1, 1))
 
-all_features = np.array(all_features)
-all_labels = np.array(all_labels)
+all_features = np.vstack(tuple(all_features))
+all_labels = np.vstack(tuple(all_labels))
 
 print('All features: ', all_features.shape)
 print('All labels: ', all_labels.shape)
