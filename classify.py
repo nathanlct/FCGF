@@ -58,6 +58,13 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         # Voxelize points and feats
         coords = np.floor(points / VOXEL_SIZE)
         inds = ME.utils.sparse_quantize(coords, return_index=True)
+
+        # build map voxel xyz -> ind
+        # then for pt xyz, retrieve its features with
+        #       features[map[np.floor(xyz/VOXEL_SIZE)]]
+        voxel2id = {tuple(coords[ind]): ind for ind in inds}
+        print(voxel2id)
+        
         coords = coords[inds]
         # Convert to batched coords compatible with ME
         coords = ME.utils.batched_coordinates([coords])
@@ -72,4 +79,3 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         xyz_down, feature = return_coords, model(stensor).F
         print('\tfeatures: ', feature.shape)
-        print(xyz_down)
