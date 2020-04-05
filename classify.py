@@ -46,13 +46,14 @@ def load_cloud(path):
 all_features = []
 all_labels = []
 
-for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
+for name in ['MiniLille1']:#, 'MiniLille2', 'MiniParis1']:
     pts, lbs = load_cloud(f'dataset/training/{name}.ply')
     k = 150000  # batch size 
 
     assert(len(pts) == len(lbs))
 
-    for i in range(len(pts)//k+1):
+    # for i in range(len(pts)//k+1):
+    for i in range(2):
         points = pts[i*k:min((i+1)*k,len(pts))]
         labels = lbs[i*k:min((i+1)*k,len(pts))]
     
@@ -86,6 +87,7 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         print('\tfeatures: ', features.shape)
 
         labels = labels[inds]
+        print(np.array(labels).shape)
 
         all_features.append(features.cpu().detach().numpy())
         all_labels.append(np.array(labels))
