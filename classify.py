@@ -87,5 +87,5 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         labels = labels[inds]
 
-        all_features.append(np.array(features.cpu()))
+        all_features.append(np.array(features.cpu().detach()))
         all_labels.append(np.array(labels))
