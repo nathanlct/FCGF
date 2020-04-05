@@ -89,3 +89,9 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         all_features.append(features.cpu().detach().numpy())
         all_labels.append(np.array(labels))
+
+all_features = np.array(all_features)
+all_labels = np.array(all_labels)
+
+print('All features: ', all_features.shape)
+print('All labels: ', all_labels.shape)
