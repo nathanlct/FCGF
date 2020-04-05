@@ -62,9 +62,9 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         # build map voxel xyz -> ind
         # then for pt xyz, retrieve its features with
         #       features[map[np.floor(xyz/VOXEL_SIZE)]]
-        voxel2id = {tuple(coords[ind]): ind for ind in inds}
+        voxel2id = {tuple(map(int, coords[ind])): ind for ind in inds}
         print(voxel2id)
-        
+
         coords = coords[inds]
         # Convert to batched coords compatible with ME
         coords = ME.utils.batched_coordinates([coords])
