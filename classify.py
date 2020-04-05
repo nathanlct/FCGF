@@ -40,15 +40,17 @@ def load_cloud(path):
     points = np.vstack((data['x'], data['y'], data['z'])).T
     # pcd = np.array(o3d.io.read_point_cloud(path).points)
     print('\tshape: ', points.shape)
-    return points
+    return points, classes
 
 for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
-    pts = load_cloud(f'dataset/training/{name}.ply')
+    pts, lbs = load_cloud(f'dataset/training/{name}.ply')
     k = 150000  # batch size 
-    
+
+    assert(len(pts) == len(lbs))
 
     for i in range(len(pts)//k+1):
         points = pts[i*k:min((i+1)*k,len(pts))]
+        labels = lbs[i*k:min((i+1)*k,len(pts))]
     
         feats = []
         feats.append(np.ones((len(points), 1)))
@@ -63,7 +65,6 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         # then for pt xyz, retrieve its features with
         #       features[map[np.floor(xyz/VOXEL_SIZE)]]
         voxel2id = {tuple(map(int, coords[ind])): ind for ind in inds}
-        print(voxel2id)
 
         coords = coords[inds]
         # Convert to batched coords compatible with ME
@@ -78,4 +79,7 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         stensor = ME.SparseTensor(feats, coords=coords).to(device)
 
         xyz_down, feature = return_coords, model(stensor).F
+        n_features = feature.shape[1]
         print('\tfeatures: ', feature.shape)
+
+        labels = labels[inds]
