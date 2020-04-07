@@ -52,6 +52,10 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
     assert(len(pts) == len(lbs))
 
+    # sort points by increasing x
+    pts, lbs = list(zip(*sorted(zip(pts, lbs), key=lambda x: x[0][0])))
+
+
     for i in range(len(pts)//k+1):
         points = pts[i*k:min((i+1)*k,len(pts))]
         labels = lbs[i*k:min((i+1)*k,len(pts))]
