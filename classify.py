@@ -54,7 +54,8 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
     # sort points by increasing x
     pts, lbs = list(zip(*sorted(zip(pts, lbs), key=lambda x: x[0][0])))
-
+    pts = np.array(pts)
+    lbs = np.array(lbs)
 
     for i in range(len(pts)//k+1):
         points = pts[i*k:min((i+1)*k,len(pts))]
