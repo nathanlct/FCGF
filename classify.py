@@ -43,7 +43,7 @@ def load_cloud(path):
     print('\tshape: ', points.shape)
     return points, classes
 
-for step, files in [('training' ['MiniLille1', 'MiniLille2', 'MiniParis1']), ('test', ['MiniDijon9'])]:
+for step, files in [('training', ['MiniLille1', 'MiniLille2', 'MiniParis1']), ('test', ['MiniDijon9'])]:
     print(f'\nGenerating {step} features')
 
     all_features = []
