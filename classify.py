@@ -57,6 +57,8 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
     pts = np.array(pts)
     lbs = np.array(lbs)
 
+    total_feats = 0
+
     for i in range(len(pts)//k+1):
         points = pts[i*k:min((i+1)*k,len(pts))]
         labels = lbs[i*k:min((i+1)*k,len(pts))]
@@ -89,11 +91,14 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
 
         xyz_down, features = return_coords, model(stensor).F
         print('\tfeatures: ', features.shape)
+        total_feats += features.shape[0]
 
         labels = labels[inds]
 
         all_features.append(features.cpu().detach().numpy())
         all_labels.append(np.array(labels).reshape(-1, 1))
+    print('features: ', total_feats)
+
 
 all_features = np.vstack(tuple(all_features))
 all_labels = np.vstack(tuple(all_labels))
