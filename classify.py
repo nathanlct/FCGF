@@ -71,6 +71,7 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         # Voxelize points and feats
         #coords = np.floor(points / VOXEL_SIZE)
         #inds = ME.utils.sparse_quantize(coords, return_index=True)
+        coords = points
         inds = np.array(range(points.shape[0]))
 
         # build map voxel xyz -> ind
