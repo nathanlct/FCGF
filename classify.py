@@ -69,8 +69,9 @@ for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
         feats = np.hstack(feats)
 
         # Voxelize points and feats
-        coords = np.floor(points / VOXEL_SIZE)
-        inds = ME.utils.sparse_quantize(coords, return_index=True)
+        #coords = np.floor(points / VOXEL_SIZE)
+        #inds = ME.utils.sparse_quantize(coords, return_index=True)
+        inds = np.array(range(points.shape[0]))
 
         # build map voxel xyz -> ind
         # then for pt xyz, retrieve its features with
