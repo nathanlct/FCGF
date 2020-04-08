@@ -37,8 +37,11 @@ print('Loaded model ' + model_path)
 def load_cloud(path):
     print('Loading point cloud at ' + path)
     data = read_ply(path)
-    classes = data['class']
     points = np.vstack((data['x'], data['y'], data['z'])).T
+    try:
+        classes = data['class']
+    except ValueError:
+        classes = np.zeros((points.shape[0],))
     # pcd = np.array(o3d.io.read_point_cloud(path).points)
     print('\tshape: ', points.shape)
     return points, classes
