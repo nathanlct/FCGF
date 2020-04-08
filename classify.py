@@ -49,7 +49,7 @@ for step, files in [('training', ['MiniLille1', 'MiniLille2', 'MiniParis1']), ('
     all_features = []
     all_labels = []
 
-    for name in ['MiniLille1', 'MiniLille2', 'MiniParis1']:
+    for name in files:
         pts, lbs = load_cloud(f'dataset/{step}/{name}.ply')
         k = 150000  # batch size 
 
