@@ -86,9 +86,13 @@ class FCGF_Features(object):
             # generate features for voxels
             xyz_down, features = return_coords, self.model(stensor).F
             print('\tfeatures: ', features.shape)
-
+        
             # build map voxel xyz -> features
             voxel2feat = {tuple(map(int, coords[j])): features[j] for j in range(len(features))}
+
+            print(coords.shape, features.shape)
+            print(len(list(voxel2feat.keys())))
+            print(list(voxel2feat.keys())[0])
 
             # deduce features for all points
             for j in range(batch_start, batch_end):
