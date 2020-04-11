@@ -64,6 +64,8 @@ class FCGF_Features(object):
             batch_start = i * self.max_batch_size
             batch_end = min((i + 1) * self.max_batch_size, len(points))
             points_batch = points[batch_start:batch_end]
+
+            print('points batch', points_batch.shape)
         
             feats = []
             feats.append(np.ones((len(points_batch), 1)))
@@ -72,6 +74,8 @@ class FCGF_Features(object):
             # voxelize points and feats
             coords = np.floor(points_batch / self.voxel_size)
             inds = ME.utils.sparse_quantize(coords, return_index=True)
+
+            print('inds', np.array(inds).shape)
 
             # convert to batched coords compatible with ME
             coords = coords[inds]
