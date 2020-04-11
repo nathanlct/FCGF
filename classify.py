@@ -88,7 +88,7 @@ class FCGF_Features(object):
             print('\tfeatures: ', features.shape)
 
             # build map voxel xyz -> features
-            voxel2id = {tuple(map(int, coords[j])): features[j] for j in range(len(features))}
+            voxel2feat = {tuple(map(int, coords[j])): features[j] for j in range(len(features))}
 
             # deduce features for all points
             for j in range(batch_start, batch_end):
