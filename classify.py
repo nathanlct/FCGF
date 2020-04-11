@@ -48,7 +48,7 @@ class FCGF_Features(object):
         return points, classes
 
     def generate_features(self, root_path, ply_name, generate_labels=True):
-        points, labels = _load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
+        points, labels = self._load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
         assert(len(points) == len(labels))
 
         # sort points by increasing x
