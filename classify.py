@@ -51,27 +51,16 @@ class FCGF_Features(object):
         points, labels = self._load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
         assert(len(points) == len(labels))
 
-        print('0')
-
         # sort points by increasing x
         points, labels = np.array(points), np.array(labels)
-        print(points.shape)
-        print('0.1')
-        idx = np.argsort(points)[0]
-        print(idx.shape)
-        print('0.2')
+        idx = np.argsort(points)[:,0]
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
         points, labels = points[idx], labels[idx]
-        print(points.shape)
-        print('0.5')
 
         all_features = np.zeros((len(points), self.n_features))
 
-        print('1')
-
         # for each batch of points
         for i in range(len(points) // self.max_batch_size + 1):
-            print('batch', i)
             batch_start = i * self.max_batch_size
             batch_end = min((i + 1) * self.max_batch_size, len(points))
             points_batch = points[batch_start:batch_end]
