@@ -55,11 +55,14 @@ class FCGF_Features(object):
 
         # sort points by increasing x
         points, labels = np.array(points), np.array(labels)
+        print(points.shape)
         print('0.1')
         idx = np.argsort(points)
+        print(idx.shape)
         print('0.2')
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
         points, labels = points[idx], labels[idx]
+        print(points.shape)
         print('0.5')
 
         all_features = np.zeros((len(points), self.n_features))
@@ -76,8 +79,6 @@ class FCGF_Features(object):
             feats = []
             feats.append(np.ones((len(points_batch), 1)))
             feats = np.hstack(feats)
-
-            print('s', points_batch.shape)
 
             # voxelize points and feats
             coords = np.floor(points_batch / self.voxel_size)
