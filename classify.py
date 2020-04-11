@@ -57,7 +57,7 @@ class FCGF_Features(object):
         points, labels = np.array(points), np.array(labels)
         print(points.shape)
         print('0.1')
-        idx = np.argsort(points)
+        idx = np.argsort(points)[0]
         print(idx.shape)
         print('0.2')
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
