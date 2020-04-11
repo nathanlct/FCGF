@@ -77,6 +77,8 @@ class FCGF_Features(object):
             feats.append(np.ones((len(points_batch), 1)))
             feats = np.hstack(feats)
 
+            print('s', points_batch.shape)
+
             # voxelize points and feats
             coords = np.floor(points_batch / self.voxel_size)
             inds = ME.utils.sparse_quantize(coords, return_index=True)
