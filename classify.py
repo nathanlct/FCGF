@@ -23,7 +23,7 @@ class FCGF_Features(object):
         # use GPU if available
         device_str = 'cuda' if torch.cuda.is_available() else 'cpu'
         print('Using ' + device_str)
-        device = torch.device(device_str)
+        self.device = torch.device(device_str)
 
         # load model
         model_path = 'ResUNetBN2C-16feat-3conv.pth'
@@ -36,7 +36,7 @@ class FCGF_Features(object):
         model = ResUNetBN2C(1, self.n_features, normalize_feature=True, conv1_kernel_size=3, D=3)
         model.load_state_dict(checkpoint['state_dict'])
         model.eval()
-        self.model = model.to(device)
+        self.model = model.to(self.device)
         print('Loaded model ' + model_path)
 
     def _load_cloud(self, path, load_labels=True):
@@ -81,7 +81,7 @@ class FCGF_Features(object):
             feats = torch.tensor(feats, dtype=torch.float32)
             coords = torch.tensor(coords, dtype=torch.int32)
 
-            stensor = ME.SparseTensor(feats, coords=coords).to(device)
+            stensor = ME.SparseTensor(feats, coords=coords).to(self.device)
 
             # generate features for voxels
             xyz_down, features = return_coords, model(stensor).F
