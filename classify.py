@@ -53,7 +53,7 @@ class FCGF_Features(object):
 
         # sort points by increasing x
         points, labels = np.array(points), np.array(labels)
-        idx = np.argsort(points, axis=0)[0]
+        idx = np.argsort(points, axis=0)[:,0]
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
         print(idx[:100])
         points, labels = points[idx], labels[idx]
