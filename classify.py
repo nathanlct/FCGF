@@ -12,10 +12,10 @@ from ply import read_ply
 
 
 class FCGF_Features(object):
-    def __init__(self, voxel_size=0.05):
+    def __init__(self, voxel_size=0.01):
         self.voxel_size = voxel_size  # in meters
         self.n_features = 16  # do not change, model is pre-trained on 16 features
-        self.max_batch_size = 150000  # depends on GPU mem available
+        self.max_batch_size = 200000  # depends on GPU mem available
 
         self._load_network()
 
@@ -65,7 +65,7 @@ class FCGF_Features(object):
             batch_end = min((i + 1) * self.max_batch_size, len(points))
             points_batch = points[batch_start:batch_end]
 
-            print('points batch', points_batch.shape)
+            #print('points batch', points_batch.shape)
         
             feats = []
             feats.append(np.ones((len(points_batch), 1)))
@@ -75,7 +75,7 @@ class FCGF_Features(object):
             coords = np.floor(points_batch / self.voxel_size)
             inds = ME.utils.sparse_quantize(coords, return_index=True)
 
-            print('inds', np.array(inds).shape)
+            #print('inds', np.array(inds).shape)
 
             # convert to batched coords compatible with ME
             coords = coords[inds]
@@ -97,9 +97,9 @@ class FCGF_Features(object):
             # build map voxel xyz -> features
             voxel2feat = {tuple(map(int, coords[j][1:])): features[j] for j in range(len(features))}
 
-            print(coords.shape, features.shape)
-            print(len(list(voxel2feat.keys())))
-            print(list(voxel2feat.keys())[0])
+            #print(coords.shape, features.shape)
+            #print(len(list(voxel2feat.keys())))
+            #print(list(voxel2feat.keys())[0])
 
             # deduce features for all points
             for j in range(batch_start, batch_end):
