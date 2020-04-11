@@ -111,7 +111,11 @@ class FCGF_Features(object):
 if __name__ == '__main__':
     network = FCGF_Features(voxel_size=0.05)
 
-    network.generate_features('dataset/training/', 'MiniLille1')
+    network.generate_features('dataset/', 'Lille1_1')
+    network.generate_features('dataset/', 'Lille1_2')
+    network.generate_features('dataset/', 'Lille2')
+    network.generate_features('dataset/', 'Paris')
+    
     # network.generate_features('dataset/training/', 'MiniLille2')
     # network.generate_features('dataset/training/', 'MiniParis1')
     # network.generate_features('dataset/test/', 'MiniDijon9', generate_labels=False)
