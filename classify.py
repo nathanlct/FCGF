@@ -84,7 +84,7 @@ class FCGF_Features(object):
             stensor = ME.SparseTensor(feats, coords=coords).to(self.device)
 
             # generate features for voxels
-            xyz_down, features = return_coords, model(stensor).F
+            xyz_down, features = return_coords, self.model(stensor).F
             print('\tfeatures: ', features.shape)
 
             # build map voxel xyz -> features
