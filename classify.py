@@ -85,6 +85,7 @@ class FCGF_Features(object):
 
             # generate features for voxels
             xyz_down, features = return_coords, self.model(stensor).F
+            features = features.cpu().detach().numpy()
             print('\tfeatures: ', features.shape)
         
             # build map voxel xyz -> features
