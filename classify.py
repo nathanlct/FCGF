@@ -39,13 +39,13 @@ class FCGF_Features(object):
         self.model = model.to(device)
         print('Loaded model ' + model_path)
 
-    def _load_cloud(self, path, load_classes=True):
+    def _load_cloud(self, path, load_labels=True):
         print('Loading point cloud at ' + path)
         data = read_ply(path)
         points = np.vstack((data['x'], data['y'], data['z'])).T
         print('\tshape: ', points.shape)
-        classes = data['class'] if load_classes else np.zeros((points.shape[0],))
-        return points, classes
+        labels = data['class'] if load_labels else np.zeros((points.shape[0],))
+        return points, labels
 
     def generate_features(self, root_path, ply_name, generate_labels=True):
         points, labels = self._load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
