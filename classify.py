@@ -9,3 +9,5 @@ for s in names:
     print(feats.shape)
     #features = np.vstack((features, feats))
     #labels = np.vstack((labels, lbs))
+    del feats
+    del lbs
