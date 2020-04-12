@@ -30,7 +30,7 @@ def generate_data():
         for i in range(len(feats) // bs):
             yield (feats[i*bs:(i+1)*bs], lbs[i*bs:(i+1)*bs])
 
-model.fit_generator(generate_data(),
+model.fit(generate_data(),
                     steps_per_epoch=10000, epochs=10)
 
 """
