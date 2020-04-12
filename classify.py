@@ -57,5 +57,5 @@ for voxel_size in [0.01]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         print('\n\n\n\nDATA LOADED:', train_features.shape, train_labels.shape)   
         
-        model.fit(train_dataset, epochs=1, validation_data=(train_features, train_labels))
+        model.fit(train_dataset, epochs=1, validation_data=train_dataset)
 
