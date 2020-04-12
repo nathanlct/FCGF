@@ -115,6 +115,65 @@ class FCGF_Features(object):
         if generate_labels:
             np.save(f'{ply_name}_labels', labels)
 
+    def generate_features_reduced(self, root_path, ply_name, generate_labels=True):
+        points, labels = self._load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
+        assert(len(points) == len(labels))
+
+        # sort points by increasing x
+        points, labels = np.array(points), np.array(labels)
+        idx = np.argsort(points, axis=0)[:,0]
+        # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
+        #print(idx[:100])
+        points, labels = points[idx], labels[idx]
+        #points, labels = points[len(points)//2:], labels[len(labels)//2:]
+
+        all_features = []
+        all_labels = []
+
+        # for each batch of points
+        for i in range(len(points) // self.max_batch_size + 1):
+            batch_start = i * self.max_batch_size
+            batch_end = min((i + 1) * self.max_batch_size, len(points))
+            points_batch = points[batch_start:batch_end]
+            labels_batch = labels[batch_start:batch_end]
+
+            #print('points batch', points_batch.shape)
+        
+            feats = []
+            feats.append(np.ones((len(points_batch), 1)))
+            feats = np.hstack(feats)
+
+            # voxelize points and feats
+            coords = np.floor(points_batch / self.voxel_size)
+            inds = ME.utils.sparse_quantize(coords, return_index=True)
+
+            #print('inds', np.array(inds).shape)
+
+            # convert to batched coords compatible with ME
+            coords = coords[inds]
+            feats = feats[inds]
+
+            coords = ME.utils.batched_coordinates([coords])
+            return_coords = points_batch[inds]  # useless?
+
+            feats = torch.tensor(feats, dtype=torch.float32)
+            coords = torch.tensor(coords, dtype=torch.int32)
+
+            stensor = ME.SparseTensor(feats, coords=coords).to(self.device)
+
+            # generate features for voxels
+            xyz_down, features = return_coords, self.model(stensor).F
+            features = features.cpu().detach().numpy()
+            print('\tfeatures: ', features.shape)
+        
+            all_features.append(features)
+            all_labels.append(labels_batch[inds])
+
+        # save labels and features for all points
+        np.save(f'{ply_name}_features_reduced', all_features)
+        if generate_labels:
+            np.save(f'{ply_name}_labels_reduced', labels)
+
 
 if __name__ == '__main__':
     network = FCGF_Features(voxel_size=0.05)#1)
@@ -124,7 +183,7 @@ if __name__ == '__main__':
     # network.generate_features('dataset/', 'Lille2')
     # network.generate_features('dataset/', 'Paris')
     
-    # network.generate_features('dataset_small/training/', 'MiniLille2')
+    network.generate_features('dataset_small/training/', 'MiniLille2')
     network.generate_features('dataset_small/training/', 'MiniParis1')
     network.generate_features('dataset_small/training/', 'MiniLille1')
     #network.generate_features('dataset/test/', 'MiniDijon9', generate_labels=False)
