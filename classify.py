@@ -36,7 +36,7 @@ if use_small_data:
     # shuffle data
     inds = np.random.shuffle(list(range(len(features))))
     features = features[inds][0]
-    labels = labels[inds] 
+    labels = labels[inds][0]
 
     print('\n\n\n\nDATA LOADED:', features.shape, labels.shape)   
      
