@@ -124,8 +124,8 @@ if __name__ == '__main__':
     # network.generate_features('dataset/', 'Lille2')
     # network.generate_features('dataset/', 'Paris')
     
-    network.generate_features('dataset_small/training/', 'MiniLille2')
-    network.generate_features('dataset_small/training/', 'MiniParis')
+    # network.generate_features('dataset_small/training/', 'MiniLille2')
+    network.generate_features('dataset_small/training/', 'MiniParis1')
     network.generate_features('dataset_small/training/', 'MiniLille1')
     #network.generate_features('dataset/test/', 'MiniDijon9', generate_labels=False)
 
