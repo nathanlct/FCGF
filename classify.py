@@ -23,22 +23,30 @@ model.compile(optimizer=tf.keras.optimizers.RMSprop(),
 
 
 if use_small_data:
-    features = np.load(f'{names[0]}_features_reduced.npy')
-    labels = np.load(f'{names[0]}_labels_reduced.npy')
+    train_features = np.load(f'{names[0]}_features_reduced.npy')
+    train_labels = np.load(f'{names[0]}_labels_reduced.npy')
 
     for s in names[1:]:
-        feats = np.load(f'{s}_features_reduced.npy')
-        lbs = np.load(f'{s}_labels_reduced.npy')
+        features = np.load(f'{s}_features_reduced.npy')
+        labels = np.load(f'{s}_labels_reduced.npy')
 
-        features = np.vstack((features, feats))
-        labels = np.append(labels, lbs)
+        train_features = np.vstack((train_features, features))
+        train_labels = np.append(train_labels, labels)
+
+
+    BATCH_SIZE = 64
+    SHUFFLE_BUFFER_SIZE = 100
+
+    train_dataset = tf.data.Dataset.from_tensor_slices((train_features, train_labels))
+    train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
+
 
     # shuffle data
-    inds = np.random.shuffle(list(range(len(features))))
-    features = features[inds][0]
-    labels = labels[inds][0]
+    # inds = np.random.shuffle(list(range(len(features))))
+    # features = features[inds][0]
+    # labels = labels[inds][0]
 
-    print('\n\n\n\nDATA LOADED:', features.shape, labels.shape)   
+    print('\n\n\n\nDATA LOADED:', train_features.shape, train_labels.shape)   
      
-    model.fit(features, labels, epochs=10)
+    model.fit(train_dataset, epochs=10)
 
