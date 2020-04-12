@@ -31,7 +31,7 @@ if use_small_data:
         lbs = np.load(f'{s}_labels.npy')
 
         features = np.vstack((features, feats))
-        labels = np.vstack((labels, lbs))
+        labels = np.append(labels, lbs)
 
     # shuffle data
     inds = np.random.shuffle(range(len(features)))
