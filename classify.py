@@ -35,10 +35,10 @@ if use_small_data:
 
     # shuffle data
     inds = np.random.shuffle(list(range(len(features))))
-    features = features[inds]
+    features = features[inds][0]
     labels = labels[inds] 
 
-    print('\n\n\n\nDATA LOADED:', features.shape)   
+    print('\n\n\n\nDATA LOADED:', features.shape, labels.shape)   
      
     model.fit(features, labels)
 
