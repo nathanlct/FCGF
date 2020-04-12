@@ -115,7 +115,7 @@ class FCGF_Features(object):
         if generate_labels:
             np.save(f'{ply_name}_labels', labels)
 
-    def generate_features_reduced(self, root_path, ply_name, generate_labels=True, name_append=''):
+    def generate_features_reduced(self, root_path, ply_name, generate_labels=True, name_append='', save_folder=''):
         points, labels = self._load_cloud(f'{root_path}{ply_name}.ply', load_labels=generate_labels)
         assert(len(points) == len(labels))
 
@@ -175,18 +175,18 @@ class FCGF_Features(object):
         print(all_features.shape, all_labels.shape)
 
         # save labels and features for all points
-        np.save(f'{ply_name}_features_reduced_{name_append}', all_features)
+        np.save(f'{save_folder}{ply_name}_features_reduced_{name_append}', all_features)
         if generate_labels:
-            np.save(f'{ply_name}_labels_reduced_{name_append}', all_labels)
+            np.save(f'{save_folder}{ply_name}_labels_reduced_{name_append}', all_labels)
 
 
 if __name__ == '__main__':
     for voxel_size in [0.01, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         network = FCGF_Features(voxel_size=voxel_size)
         
-        network.generate_features_reduced('dataset_small/training/', 'MiniLille2', name_append=str(voxel_size))
-        network.generate_features_reduced('dataset_small/training/', 'MiniParis1', name_append=str(voxel_size))
-        network.generate_features_reduced('dataset_small/training/', 'MiniLille1', name_append=str(voxel_size))
+        network.generate_features_reduced('dataset_small/training/', 'MiniLille2', name_append=str(voxel_size), save_folder='train_data/')
+        network.generate_features_reduced('dataset_small/training/', 'MiniParis1', name_append=str(voxel_size), save_folder='train_data/')
+        network.generate_features_reduced('dataset_small/training/', 'MiniLille1', name_append=str(voxel_size), save_folder='train_data/')
 
     # network.generate_features('dataset/', 'Lille1_1')
     # network.generate_features('dataset/', 'Lille1_2')
