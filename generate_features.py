@@ -177,7 +177,7 @@ class FCGF_Features(object):
         # save labels and features for all points
         np.save(f'{ply_name}_features_reduced', all_features)
         if generate_labels:
-            np.save(f'{ply_name}_labels_reduced', labels)
+            np.save(f'{ply_name}_labels_reduced', all_labels)
 
 
 if __name__ == '__main__':
