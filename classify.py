@@ -38,7 +38,7 @@ if use_small_data:
     features = features[inds]
     labels = labels[inds] 
 
-    print('data loaded:', features.shape)   
+    print('\n\n\n\nDATA LOADED:', features.shape)   
      
     model.fit(features, labels)
 
