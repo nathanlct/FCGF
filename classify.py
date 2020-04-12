@@ -40,5 +40,5 @@ if use_small_data:
 
     print('\n\n\n\nDATA LOADED:', features.shape, labels.shape)   
      
-    model.fit(features, labels)
+    model.fit(features, labels, epochs=10)
 
