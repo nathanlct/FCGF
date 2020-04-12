@@ -16,9 +16,9 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
@@ -42,6 +42,16 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             train_features = np.vstack((train_features, features))
             train_labels = np.append(train_labels, labels)
 
+        # shuffle data
+        inds = np.random.shuffle(list(range(len(train_features))))
+        train_features = features[inds]
+        train_labels = labels[inds]
+
+        if train_features.shape[0] == 1:
+            train_features = train_features[0]
+        if train_labels.shape[0] == 1:
+            train_labels = train_labels[0]
+
 
         BATCH_SIZE = 64
         SHUFFLE_BUFFER_SIZE = 100
@@ -50,10 +60,6 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
 
 
-        # shuffle data
-        # inds = np.random.shuffle(list(range(len(features))))
-        # features = features[inds][0]
-        # labels = labels[inds][0]
 
         print('\n\n\n\nDATA LOADED:', train_features.shape, train_labels.shape)   
         
