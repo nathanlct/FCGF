@@ -34,7 +34,7 @@ if use_small_data:
         labels = np.append(labels, lbs)
 
     # shuffle data
-    inds = np.random.shuffle(range(len(features)))
+    inds = np.random.shuffle(list(range(len(features))))
     features = features[inds]
     labels = labels[inds] 
 
