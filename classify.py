@@ -21,7 +21,7 @@ def generate_data():
     lbs = np.load(f'MiniLille2_labels.npy')
 
     # shuffle data
-    inds = np.random.shuffle(range(len(feats)))
+    inds = np.random.shuffle(list(range(len(feats))))
     feats = feats[inds]
     lbs = lbs[inds]     
     
