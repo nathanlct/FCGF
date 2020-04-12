@@ -57,7 +57,7 @@ class FCGF_Features(object):
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
         #print(idx[:100])
         points, labels = points[idx], labels[idx]
-        points, labels = points[:len(points)//2], labels[:len(labels)//2]
+        points, labels = points[len(points)//2:], labels[len(labels)//2:]
 
         all_features = np.zeros((len(points), self.n_features))
 
@@ -111,9 +111,9 @@ class FCGF_Features(object):
                 all_features[j,:] = voxel2feat[pt_voxel]
 
         # save labels and features for all points
-        np.save(f'{ply_name}1_features', all_features)
+        np.save(f'{ply_name}2_features', all_features)
         if generate_labels:
-            np.save(f'{ply_name}1_labels', labels)
+            np.save(f'{ply_name}2_labels', labels)
 
 
 if __name__ == '__main__':
