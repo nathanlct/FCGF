@@ -44,8 +44,8 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         # shuffle data
         inds = np.random.shuffle(list(range(len(train_features))))
-        train_features = features[inds]
-        train_labels = labels[inds]
+        train_features = train_features[inds]
+        train_labels = train_labels[inds]
 
         if train_features.shape[0] == 1:
             train_features = train_features[0]
