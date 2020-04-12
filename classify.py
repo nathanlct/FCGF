@@ -11,9 +11,9 @@ else:
     names = ['Lille1_1', 'Lille1_2', 'Lille2', 'Paris1', 'Paris2']
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Dropout(0.3),
+    #tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dropout(0.3),
+    #tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(N_CLASSES)
 ])
 
