@@ -57,7 +57,7 @@ class FCGF_Features(object):
         # points, labels = list(zip(*sorted(zip(points, labels), key=lambda x: x[0][0])))
         #print(idx[:100])
         points, labels = points[idx], labels[idx]
-        points, labels = points[:19000000], labels[:19000000]
+        points, labels = points[:len(points)//2], labels[:len(labels)//2]
 
         all_features = np.zeros((len(points), self.n_features))
 
