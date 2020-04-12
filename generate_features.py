@@ -169,6 +169,11 @@ class FCGF_Features(object):
             all_features.append(features)
             all_labels.append(labels_batch[inds])
 
+        all_features = np.vstack(all_features)
+        all_labels = np.hstack(all_labels)
+
+        print(all_features.shape, all_labels.shape)
+
         # save labels and features for all points
         np.save(f'{ply_name}_features_reduced', all_features)
         if generate_labels:
