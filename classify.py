@@ -17,17 +17,18 @@ model.compile(optimizer=tf.keras.optimizers.RMSprop(),
 
 
 def generate_data():
-    feats = np.load(f'MiniLille1_features.npy')
-    lbs = np.load(f'MiniLille2_labels.npy')
+    while True:
+        feats = np.load(f'MiniLille1_features.npy')
+        lbs = np.load(f'MiniLille2_labels.npy')
 
-    # shuffle data
-    inds = np.random.shuffle(list(range(len(feats))))
-    feats = feats[inds]
-    lbs = lbs[inds]     
-    
-    bs = 64
-    for i in range(len(feats) // bs):
-        yield (feats[i*bs:(i+1)*bs], lbs[i*bs:(i+1)*bs])
+        # shuffle data
+        inds = np.random.shuffle(list(range(len(feats))))
+        feats = feats[inds]
+        lbs = lbs[inds]     
+        
+        bs = 64
+        for i in range(len(feats) // bs):
+            yield (feats[i*bs:(i+1)*bs], lbs[i*bs:(i+1)*bs])
 
 model.fit_generator(generate_data(),
                     steps_per_epoch=10000, epochs=10)
