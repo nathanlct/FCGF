@@ -23,12 +23,12 @@ model.compile(optimizer=tf.keras.optimizers.RMSprop(),
 
 
 if use_small_data:
-    features = np.load(f'{names[0]}_features.npy')
-    labels = np.load(f'{names[0]}_labels.npy')
+    features = np.load(f'{names[0]}_features_reduced.npy')
+    labels = np.load(f'{names[0]}_labels_reduced.npy')
 
     for s in names[1:]:
-        feats = np.load(f'{s}_features.npy')
-        lbs = np.load(f'{s}_labels.npy')
+        feats = np.load(f'{s}_features_reduced.npy')
+        lbs = np.load(f'{s}_labels_reduced.npy')
 
         features = np.vstack((features, feats))
         labels = np.append(labels, lbs)
