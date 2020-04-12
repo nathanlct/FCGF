@@ -5,7 +5,7 @@ use_small_data = True
 
 if use_small_data:
     N_CLASSES = 7
-    names = ['MiniLille1', 'MiniLille2', 'MiniParis']
+    names = ['MiniLille1', 'MiniLille2', 'MiniParis1']
 else:
     N_CLASSES = 10  # between 0 and 9
     names = ['Lille1_1', 'Lille1_2', 'Lille2', 'Paris1', 'Paris2']
