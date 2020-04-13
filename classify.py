@@ -63,7 +63,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             batch_start = i * batch_size
             batch_end = (i + 1) * batch_size
             y = model.predict_on_batch(test_features[batch_start:batch_end])
-            y_out += np.argmax(y, axis=1)
+            y_pred += np.argmax(y, axis=1)
         y_pred = np.array(y_pred)
 
         # stats
