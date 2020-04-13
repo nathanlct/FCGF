@@ -27,7 +27,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     paris_labels = np.load(f'train_data/MiniParis1_labels_{str(voxel_size)}.npy')
 
     train_features = np.vstack((lille1_features, paris_features))
-    train_labels = np.append((lille1_labels, paris_labels))
+    train_labels = np.append(lille1_labels, paris_labels)
 
     test_features = lille2_features
     test_labels = lille2_labels
