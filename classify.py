@@ -16,12 +16,13 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(32, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.01)),
+        tf.keras.layers.Dropout(0.35),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=5*1e-3),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
