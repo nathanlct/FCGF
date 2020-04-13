@@ -22,9 +22,9 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.RMSprop(),
-                loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                metrics=['sparse_categorical_accuracy'])
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=0.01),
+                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                  metrics=['sparse_categorical_accuracy'])
 
 
     if use_small_data:
@@ -53,17 +53,25 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             train_labels = train_labels[0]
 
 
-        BATCH_SIZE = 64
-        SHUFFLE_BUFFER_SIZE = 1000
+        # BATCH_SIZE = 64
+        # SHUFFLE_BUFFER_SIZE = 1000
 
-        train_dataset = tf.data.Dataset.from_tensor_slices((train_features, train_labels))
-        train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
+        # train_dataset = tf.data.Dataset.from_tensor_slices((train_features, train_labels))
+        # train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
 
 
 
         print('\n\n\n\nDATA LOADED:', train_features.shape, train_labels.shape)   
         
-        model.fit(train_dataset, epochs=1, validation_data=train_dataset)
+        # model.fit(train_dataset, epochs=1, validation_data=train_dataset)
+
+        batch_size = 64
+        for i in range(len(train_features) // batch_size):
+            if i % 100 == 0:
+                print(f'batch {i}/{len(train_features)//batch_size}')
+            batch_start = i * batch_size
+            batch_end = (i + 1) * batch_size
+            model.train_on_batch(train_features[batch_start:batch_end], train_labels[batch_start:batch_end])
 
         y_out = model.predict(train_features, batch_size=64)
         y_pred = np.argmax(y_out, axis=1)
