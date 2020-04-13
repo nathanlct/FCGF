@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 
-for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
@@ -10,10 +10,10 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     batch_size = 64
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(32, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.01)),
-        tf.keras.layers.Dropout(0.35),
-        tf.keras.layers.Dense(7, activation='softmax', activity_regularizer=tf.keras.regularizers.l1(0.05))
+        tf.keras.layers.Dropout(0.4),
+        tf.keras.layers.Dense(64, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.05)),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(7, activation='softmax', activity_regularizer=tf.keras.regularizers.l1(0.1))
     ])
 
     model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
@@ -88,3 +88,17 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         print()
         print()
+
+
+"""
+Accuracy: 0.8439563129429317
+0: 7772 predicted, 3081 correctly predicted, 22620 total
+1: 307942 predicted, 273608 correctly predicted, 302493 total
+2: 313267 predicted, 271891 correctly predicted, 332459 total
+3: 0 predicted, 0 correctly predicted, 4651 total
+4: 0 predicted, 0 correctly predicted, 0 total
+5: 24507 predicted, 20302 correctly predicted, 32044 total
+6: 204432 predicted, 155165 correctly predicted, 163653 total
+IoU:  0.7311599797409601
+
+"""
