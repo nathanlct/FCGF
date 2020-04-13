@@ -16,9 +16,9 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(64, activation='tanh'),
-        tf.keras.layers.Dropout(0.4),
+        #tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(16, activation='tanh'),
+        #tf.keras.layers.Dropout(0.4),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
@@ -65,3 +65,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         
         model.fit(train_dataset, epochs=1, validation_data=train_dataset)
 
+        y_out = model.predict(train_features, batch_size=64)
+        y_pred = np.argmax(y_out, axis=1)
+        for i in range(7):
+            print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, train_labels == i))} correctly predicted, {np.count_nonzero(train_labels == i)} total')
