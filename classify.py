@@ -7,6 +7,8 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
 
+    batch_size = 64
+
     model = tf.keras.Sequential([
         tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Dense(32, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.01)),
@@ -32,6 +34,14 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     test_features = lille2_features
     test_labels = lille2_labels
 
+    n_train = len(train_features) - (len(train_features) % batch_size)
+    train_features = train_features[:n_train]
+    train_labels = train_labels[:n_train]
+
+    n_test = len(test_features) - (len(test_features) % batch_size)
+    test_features = test_features[:n_test]
+    test_labels = test_labels[:n_test]
+
     print('train:', train_features.shape, train_labels.shape)
     print('test:', test_features.shape, test_labels.shape)
 
@@ -45,7 +55,6 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         train_labels = train_labels[inds]
         del inds
 
-        batch_size = 64
         print('Starting training')
         for i in range(len(train_features) // batch_size):
             if i % 10000 == 0:
