@@ -56,15 +56,14 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         print('Training ended')
         print('Epoch stats:')
 
-        y_pred = []
+        y_pred = np.array([])
         for i in range(len(test_features) // batch_size):
             if i % 10000 == 0:
                 print(f'batch {i}/{len(test_features)//batch_size}')
             batch_start = i * batch_size
             batch_end = (i + 1) * batch_size
             y = model.predict_on_batch(test_features[batch_start:batch_end])
-            y_pred += np.argmax(y, axis=1)
-        y_pred = np.array(y_pred)
+            y_pred = np.append(y_pred, np.argmax(y, axis=1))
 
         # stats
         print('Accuracy:', np.count_nonzero(y_pred == test_labels) / len(test_labels))
