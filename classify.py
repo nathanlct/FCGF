@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 
-for voxel_size in [0.01, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.5, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
