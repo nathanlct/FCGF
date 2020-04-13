@@ -52,17 +52,17 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             test_labels = np.append(test_labels, t_labels)
 
         # shuffle data
+        inds = np.random.shuffle(list(range(len(train_features))))
+        train_features = train_features[inds]
+        train_labels = train_labels[inds]
+
+        if train_features.shape[0] == 1:
+            train_features = train_features[0]
+        if train_labels.shape[0] == 1:
+            train_labels = train_labels[0]
 
         for kk in range(10):
             print('EPOCH', kk)
-            inds = np.random.shuffle(list(range(len(train_features))))
-            train_features = train_features[inds]
-            train_labels = train_labels[inds]
-
-            if train_features.shape[0] == 1:
-                train_features = train_features[0]
-            if train_labels.shape[0] == 1:
-                train_labels = train_labels[0]
 
 
             # BATCH_SIZE = 64
@@ -98,8 +98,8 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             iou = 0
             for i in range(7):
                 print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))} correctly predicted, {np.count_nonzero(test_labels == i)} total')
-                iou += np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
-            iou /= 7
+                iou += (np.count_nonzero(test_labels == i) / len(test_labels)) * np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
+            #iou /= 7
 
             print('IoU: ', iou)
 
