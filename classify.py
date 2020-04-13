@@ -17,7 +17,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
     model = tf.keras.Sequential([
         #tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(16, activation='tanh'),
+        # tf.keras.layers.Dense(16, activation='tanh'),
         #tf.keras.layers.Dropout(0.4),
         tf.keras.layers.Dense(N_CLASSES)
     ])
@@ -69,3 +69,15 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         y_pred = np.argmax(y_out, axis=1)
         for i in range(7):
             print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, train_labels == i))} correctly predicted, {np.count_nonzero(train_labels == i)} total')
+
+
+
+"""
+0: 143997 predicted, 8338 correctly predicted, 138056 total
+1: 953760 predicted, 610057 correctly predicted, 823213 total
+2: 72 predicted, 71 correctly predicted, 1007452 total
+3: 0 predicted, 0 correctly predicted, 13948 total
+4: 0 predicted, 0 correctly predicted, 12956 total
+5: 0 predicted, 0 correctly predicted, 85304 total
+6: 1970023 predicted, 976786 correctly predicted, 986923 total
+"""
