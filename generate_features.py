@@ -181,13 +181,13 @@ class FCGF_Features(object):
 
 
 if __name__ == '__main__':
-    for voxel_size in [0.01, 0.05, 0.10, 0.15, 0.20, 0.30, 0.70, 1.0]:
+    for voxel_size in [0.40]:#[0.01, 0.05, 0.10, 0.15, 0.20, 0.30, 0.70, 1.0]:
         print(f'Generating features for voxel size {voxel_size}')
         network = FCGF_Features(voxel_size=voxel_size)
         
         network.generate_features('dataset_small/training/', 'MiniLille2', name_append=str(voxel_size), save_folder='train_data/')
-        network.generate_features('dataset_small/training/', 'MiniParis1', name_append=str(voxel_size), save_folder='train_data/')
-        network.generate_features('dataset_small/training/', 'MiniLille1', name_append=str(voxel_size), save_folder='train_data/')
+        # network.generate_features('dataset_small/training/', 'MiniParis1', name_append=str(voxel_size), save_folder='train_data/')
+        # network.generate_features('dataset_small/training/', 'MiniLille1', name_append=str(voxel_size), save_folder='train_data/')
 
     # network.generate_features('dataset/', 'Lille1_1')
     # network.generate_features('dataset/', 'Lille1_2')
