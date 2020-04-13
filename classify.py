@@ -10,17 +10,15 @@ else:
     N_CLASSES = 10  # between 0 and 9
     names = ['Lille1_1', 'Lille1_2', 'Lille2', 'Paris1', 'Paris2']
 
-for voxel_size in [0.01]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
-        #tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(64, activation='relu'),
         tf.keras.layers.Dropout(0.2),
-        tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.2),
+        tf.keras.layers.Dense(64, activation='tanh'),
+        tf.keras.layers.Dropout(0.4),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
