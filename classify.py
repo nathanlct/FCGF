@@ -16,7 +16,7 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         tf.keras.layers.Dense(7, activation='softmax', activity_regularizer=tf.keras.regularizers.l1(0.01))
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-3),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),#from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
@@ -118,5 +118,21 @@ Accuracy: 0.8439563129429317
 5: 24507 predicted, 20302 correctly predicted, 32044 total
 6: 204432 predicted, 155165 correctly predicted, 163653 total
 IoU:  0.7311599797409601
+
+
+Accuracy: 0.7963350927223001
+0: 16088 predicted, 4317 correctly predicted, 43369 total
+1: 687885 predicted, 672055 correctly predicted, 789570 total
+2: 750412 predicted, 623354 correctly predicted, 769184 total
+3: 0 predicted, 0 correctly predicted, 9720 total
+4: 0 predicted, 0 correctly predicted, 0 total
+5: 9263 predicted, 4361 correctly predicted, 70208 total
+6: 455200 predicted, 223959 correctly predicted, 236797 total
+IoU:  0.685103316204136
+
+
+Averaged stats:
+        Precision=0.8311871026671884, recall=0.7887357414448669, FI=0.7772090831374616, IoU=0.6715653858825905
+        Accuracy: 0.7887357414448669
 
 """
