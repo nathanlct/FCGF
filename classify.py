@@ -16,7 +16,7 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         tf.keras.layers.Dense(7, activation='softmax', activity_regularizer=tf.keras.regularizers.l1(0.01))
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-3),
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),#from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
