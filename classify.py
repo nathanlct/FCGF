@@ -22,7 +22,7 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-3),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
@@ -33,15 +33,15 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         # train_features = np.load(f'{names[0]}_features.npy')
         # train_labels = np.load(f'{names[0]}_labels.npy')
 
-        test_features = np.load(f'train_data/{names[0]}_features_0.05.npy')
-        test_labels = np.load(f'train_data/{names[0]}_labels_0.05.npy')
+        test_features = np.load(f'train_data/{names[0]}_features_0.1.npy')
+        test_labels = np.load(f'train_data/{names[0]}_labels_0.1.npy')
 
         for s in names[1:]:
             features = np.load(f'train_data/{s}_features_reduced_{str(voxel_size)}.npy')
             labels = np.load(f'train_data/{s}_labels_reduced_{str(voxel_size)}.npy')
 
-            t_features = np.load(f'train_data/{s}_features_0.05.npy')
-            t_labels = np.load(f'train_data/{s}_labels_0.05.npy')
+            t_features = np.load(f'train_data/{s}_features_0.1.npy')
+            t_labels = np.load(f'train_data/{s}_labels_0.1.npy')
             # features = np.load(f'{s}_features.npy')
             # labels = np.load(f'{s}_labels.npy')
 
@@ -55,6 +55,9 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         inds = np.random.shuffle(list(range(len(train_features))))
         train_features = train_features[inds]
         train_labels = train_labels[inds]
+        del inds
+        del features
+        del labels
 
         if train_features.shape[0] == 1:
             train_features = train_features[0]
@@ -79,13 +82,16 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
             batch_size = 64
             for i in range(len(train_features) // batch_size):
-                if i % 20000 == 0:
+                if i % 100 == 0:
                     print(f'batch {i}/{len(train_features)//batch_size}')
                 batch_start = i * batch_size
                 batch_end = (i + 1) * batch_size
                 model.train_on_batch(train_features[batch_start:batch_end], train_labels[batch_start:batch_end])
+                if i == 0:
+                    print('end i=0')
 
 
+            print('start predict')
             y_out = model.predict(test_features, batch_size=64)
             y_pred = np.argmax(y_out, axis=1)
             print('ACCURACY: ', np.count_nonzero(y_pred == test_labels)/len(test_labels))
