@@ -33,14 +33,23 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         # train_features = np.load(f'{names[0]}_features.npy')
         # train_labels = np.load(f'{names[0]}_labels.npy')
 
+        test_features = np.load(f'train_data/{names[0]}_features_0.05.npy')
+        test_labels = np.load(f'train_data/{names[0]}_labels_0.05.npy')
+
         for s in names[1:]:
             features = np.load(f'train_data/{s}_features_reduced_{str(voxel_size)}.npy')
             labels = np.load(f'train_data/{s}_labels_reduced_{str(voxel_size)}.npy')
+
+            t_features = np.load(f'train_data/{s}_features_0.05.npy')
+            t_labels = np.load(f'train_data/{s}_labels_0.05.npy')
             # features = np.load(f'{s}_features.npy')
             # labels = np.load(f'{s}_labels.npy')
 
             train_features = np.vstack((train_features, features))
             train_labels = np.append(train_labels, labels)
+
+            test_features = np.vstack((test_features, t_features))
+            test_labels = np.append(test_labels, t_labels)
 
         # shuffle data
 
@@ -76,15 +85,27 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
                 batch_end = (i + 1) * batch_size
                 model.train_on_batch(train_features[batch_start:batch_end], train_labels[batch_start:batch_end])
 
-            y_out = model.predict(train_features, batch_size=64)
+
+            y_out = model.predict(test_features, batch_size=64)
             y_pred = np.argmax(y_out, axis=1)
-            print('TRAIN ACCURACY: ', np.count_nonzero(y_pred == train_labels)/len(train_labels))
+            print('ACCURACY: ', np.count_nonzero(y_pred == test_labels)/len(test_labels))
+
+            # and the intersection over union as the intersection of the points assigned to class $i$ by the points belonging to class $i$, divided by their union
+            # $$\text{IoU}_i = \frac{\text{TP}_i}{\text{TP}_i + \text{FP}_i + \text{FN}_i}$$
+
+            
             print()
+            iou = 0
             for i in range(7):
-                print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, train_labels == i))} correctly predicted, {np.count_nonzero(train_labels == i)} total')
+                print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))} correctly predicted, {np.count_nonzero(test_labels == i)} total')
+                iou += np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
+            iou /= 7
+
+            print('IoU: ', iou)
+
             print()
-
-
+            print()
+            print()
 """
 0: 143997 predicted, 8338 correctly predicted, 138056 total
 1: 953760 predicted, 610057 correctly predicted, 823213 total
