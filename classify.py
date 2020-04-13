@@ -10,19 +10,19 @@ else:
     N_CLASSES = 10  # between 0 and 9
     names = ['Lille1_1', 'Lille1_2', 'Lille2', 'Paris1', 'Paris2']
 
-for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
         tf.keras.layers.Dropout(0.5),
-        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(32, activation='relu'),
         tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-3),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
