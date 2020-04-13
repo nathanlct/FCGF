@@ -35,64 +35,46 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('train:', train_features.shape, train_labels.shape)
     print('test:', test_features.shape, test_labels.shape)
 
-    # shuffle data
-    inds = np.random.shuffle(list(range(len(train_features))))
-    train_features = train_features[inds]
-    train_labels = train_labels[inds]
-    del inds
+    for e in range(10):
+        print('STARTING EPOCH', e)
 
-    print('train:', train_features.shape, train_labels.shape)
-    print('test:', test_features.shape, test_labels.shape)
-
-    if train_features.shape[0] == 1:
-        train_features = train_features[0]
-    if train_labels.shape[0] == 1:
-        train_labels = train_labels[0]
-
-    for kk in range(10):
-        print('EPOCH', kk)
-
-
-        # BATCH_SIZE = 64
-        # SHUFFLE_BUFFER_SIZE = 1000
-
-        # train_dataset = tf.data.Dataset.from_tensor_slices((train_features, train_labels))
-        # train_dataset = train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
-
-
-
-        print('\n\n\n\nDATA LOADED:', train_features.shape, train_labels.shape)   
-        
-        # model.fit(train_dataset, epochs=1, validation_data=train_dataset)
+        # shuffle dataset
+        inds = list(range(len(train_features)))
+        np.random.shuffle(inds)
+        train_features = train_features[inds]
+        train_labels = train_labels[inds]
+        del inds
 
         batch_size = 64
+        print('Starting training')
         for i in range(len(train_features) // batch_size):
             if i % 10000 == 0:
                 print(f'batch {i}/{len(train_features)//batch_size}')
             batch_start = i * batch_size
             batch_end = (i + 1) * batch_size
             model.train_on_batch(train_features[batch_start:batch_end], train_labels[batch_start:batch_end])
-            if i == 0:
-                print('end i=0')
+        print('Training ended')
+        print('Epoch stats:')
 
+        y_pred = []
+        for i in range(len(test_features) // batch_size):
+            if i % 10000 == 0:
+                print(f'batch {i}/{len(test_features)//batch_size}')
+            batch_start = i * batch_size
+            batch_end = (i + 1) * batch_size
+            y = model.predict_on_batch(test_features[batch_start:batch_end])
+            y_out += np.argmax(y, axis=1)
+        y_pred = np.array(y_pred)
 
-        print('start predict')
-        y_out = model.predict(test_features, batch_size=64)
-        y_pred = np.argmax(y_out, axis=1)
-        print('ACCURACY: ', np.count_nonzero(y_pred == test_labels)/len(test_labels))
-
-        # and the intersection over union as the intersection of the points assigned to class $i$ by the points belonging to class $i$, divided by their union
-        # $$\text{IoU}_i = \frac{\text{TP}_i}{\text{TP}_i + \text{FP}_i + \text{FN}_i}$$
-
-        
-        print()
+        # stats
+        print('Accuracy:', np.count_nonzero(y_pred == test_labels) / len(test_labels))
+       
         iou = 0
         for i in range(7):
             print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))} correctly predicted, {np.count_nonzero(test_labels == i)} total')
             iou += (np.count_nonzero(test_labels == i) / len(test_labels)) * np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
-
+            
         print('IoU: ', iou)
 
-        print()
         print()
         print()
