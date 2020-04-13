@@ -18,9 +18,9 @@ for voxel_size in [0.01]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     model = tf.keras.Sequential([
         #tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dropout(0.6),
+        tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.6),
+        tf.keras.layers.Dropout(0.2),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
