@@ -16,13 +16,12 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
 
     model = tf.keras.Sequential([
-        tf.keras.layers.Dropout(0.3),
         tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-3),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=1e-2),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
@@ -82,7 +81,7 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
             batch_size = 64
             for i in range(len(train_features) // batch_size):
-                if i % 100 == 0:
+                if i % 10000 == 0:
                     print(f'batch {i}/{len(train_features)//batch_size}')
                 batch_start = i * batch_size
                 batch_end = (i + 1) * batch_size
