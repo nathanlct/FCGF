@@ -10,7 +10,7 @@ else:
     N_CLASSES = 10  # between 0 and 9
     names = ['Lille1_1', 'Lille1_2', 'Lille2', 'Paris1', 'Paris2']
 
-for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
