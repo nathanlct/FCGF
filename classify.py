@@ -22,7 +22,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         tf.keras.layers.Dense(N_CLASSES)
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=0.01),
+    model.compile(optimizer=tf.keras.optimizers.Adagrad(learning_rate=0.001),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
                   metrics=['sparse_categorical_accuracy'])
 
@@ -75,7 +75,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         y_out = model.predict(train_features, batch_size=64)
         y_pred = np.argmax(y_out, axis=1)
-        print('TRAIN ACCURACY: ', np.count_nonzero(y_pred == train_labels))
+        print('TRAIN ACCURACY: ', np.count_nonzero(y_pred == train_labels)/len(train_labels))
         print()
         for i in range(7):
             print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, train_labels == i))} correctly predicted, {np.count_nonzero(train_labels == i)} total')
