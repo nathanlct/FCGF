@@ -67,7 +67,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         batch_size = 64
         for i in range(len(train_features) // batch_size):
-            if i % 100 == 0:
+            if i % 5000 == 0:
                 print(f'batch {i}/{len(train_features)//batch_size}')
             batch_start = i * batch_size
             batch_end = (i + 1) * batch_size
@@ -75,9 +75,11 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
 
         y_out = model.predict(train_features, batch_size=64)
         y_pred = np.argmax(y_out, axis=1)
+        print('TRAIN ACCURACY: ', np.count_nonzero(y_pred == train_labels))
+        print()
         for i in range(7):
             print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, train_labels == i))} correctly predicted, {np.count_nonzero(train_labels == i)} total')
-
+        print()
 
 
 """
