@@ -35,7 +35,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('train:', train_features.shape, train_labels.shape)
     print('test:', test_features.shape, test_labels.shape)
 
-    for e in range(10):
+    for e in range(3):
         print('STARTING EPOCH', e)
 
         # shuffle dataset
@@ -73,7 +73,7 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
         for i in range(7):
             print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))} correctly predicted, {np.count_nonzero(test_labels == i)} total')
             iou += (np.count_nonzero(test_labels == i) / len(test_labels)) * np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
-            
+
         print('IoU: ', iou)
 
         print()
