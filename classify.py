@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 
 
-for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
+for voxel_size in [0.01, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     print('----------------------------------------------')
     print('TRAINING WITH VOXEL SIZE ', voxel_size)
     print('----------------------------------------------')
@@ -10,9 +10,9 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
     batch_size = 64
 
     model = tf.keras.Sequential([
+        tf.keras.layers.Dropout(0.3),
+        tf.keras.layers.Dense(32, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.01)),
         tf.keras.layers.Dropout(0.4),
-        tf.keras.layers.Dense(64, activation='relu', activity_regularizer=tf.keras.regularizers.l1(0.01)),
-        tf.keras.layers.Dropout(0.5),
         tf.keras.layers.Dense(7, activation='softmax', activity_regularizer=tf.keras.regularizers.l1(0.05))
     ])
 
