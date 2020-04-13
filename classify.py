@@ -20,13 +20,14 @@ for voxel_size in [0.10]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                   metrics=['sparse_categorical_accuracy'])
 
+    # only take reduced versions for training
     lille1_features = np.load(f'train_data/MiniLille1_features_reduced_{str(voxel_size)}.npy')
-    lille2_features = np.load(f'train_data/MiniLille2_features_reduced_{str(voxel_size)}.npy')
-    paris_features = np.load(f'train_data/MiniParis1_features_{str(voxel_size)}.npy')
+    lille2_features = np.load(f'train_data/MiniLille2_features_{str(voxel_size)}.npy')
+    paris_features = np.load(f'train_data/MiniParis1_features_reduced_{str(voxel_size)}.npy')
 
     lille1_labels = np.load(f'train_data/MiniLille1_labels_reduced_{str(voxel_size)}.npy')
-    lille2_labels = np.load(f'train_data/MiniLille2_labels_reduced_{str(voxel_size)}.npy')
-    paris_labels = np.load(f'train_data/MiniParis1_labels_{str(voxel_size)}.npy')
+    lille2_labels = np.load(f'train_data/MiniLille2_labels_{str(voxel_size)}.npy')
+    paris_labels = np.load(f'train_data/MiniParis1_labels_reduced_{str(voxel_size)}.npy')
 
     train_features = np.vstack((lille1_features, paris_features))
     train_labels = np.append(lille1_labels, paris_labels)
