@@ -74,17 +74,35 @@ for voxel_size in [0.05]:#, 0.05, 0.10, 0.15, 0.20, 0.4, 0.7, 1.0]:
             y = model.predict_on_batch(test_features[batch_start:batch_end])
             y_pred = np.append(y_pred, np.argmax(y, axis=1))
 
-        # stats
-        print('Accuracy:', np.count_nonzero(y_pred == test_labels) / len(test_labels))
-       
-        iou = 0
-        for i in range(7):
-            print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))} correctly predicted, {np.count_nonzero(test_labels == i)} total')
-            xxx = np.count_nonzero(np.logical_or(y_pred == i, test_labels == i))
-            if xxx != 0:
-                iou += (np.count_nonzero(test_labels == i) / len(test_labels)) * np.count_nonzero(np.logical_and(y_pred == i, test_labels == i)) / xxx
+        # stats       
+        avg_precision = 0
+        avg_recall = 0
+        avg_FI = 0
+        avg_IoU = 0
 
-        print('IoU: ', iou)
+        for i in range(7):
+            TP = np.count_nonzero(np.logical_and(y_pred == i, test_labels == i))
+            TN = np.count_nonzero(np.logical_and(y_pred != i, test_labels != i))
+            FP = np.count_nonzero(np.logical_and(y_pred == i, test_labels != i))
+            FN = np.count_nonzero(np.logical_and(y_pred != i, test_labels == i))
+
+            precision = TP / (TP + FP) if TP + FP != 0 else 0
+            recall = TP / (TP + FN) if TP + FN != 0 else 0
+            FI = 2 * recall * precision / (recall + precision) if recall + precision != 0 else 0
+            IoU = TP / (TP + FP + FN) if TP + FP + FN != 0 else 0
+
+            print(f'{i}: {np.count_nonzero(y_pred == i)} predicted, {np.count_nonzero(test_labels == i)} total, TP={TP}, TN={TN}, FP={FP}, FN={FN}')
+            print(f'\tprecision={precision}, recall={recall}, FI={FI}, IoU={IoU}')
+
+            coef = np.count_nonzero(test_labels == i) / len(test_labels)
+            avg_precision += coef * precision
+            avg_recall += coef * recall
+            avg_FI += coef * FI
+            avg_IoU += coef * IoU
+
+        print('Averaged stats:')
+        print(f'\tPrecision={avg_precision}, recall={avg_recall}, FI={avg_FI}, IoU={avg_IoU}')
+        print('\tAccuracy:', np.count_nonzero(y_pred == test_labels) / len(test_labels))
 
         print()
         print()
